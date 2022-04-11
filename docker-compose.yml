@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./db-setup-account.sql:/docker-entrypoint-initdb.d/db-setup.sql
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115 -c max_prepared_transactions=100
     ports:
       - 5491:5432
 
@@ -25,7 +25,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./db-setup-order.sql:/docker-entrypoint-initdb.d/db-setup.sql
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115 -c max_prepared_transactions=100
     ports:
       - 5492:5432
 
@@ -39,6 +39,6 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - ./db-setup-product.sql:/docker-entrypoint-initdb.d/db-setup.sql
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c pg_stat_statements.track=all -c max_connections=115 -c max_prepared_transactions=100
     ports:
       - 5493:5432

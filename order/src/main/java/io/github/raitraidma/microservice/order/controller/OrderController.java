@@ -2,10 +2,9 @@ package io.github.raitraidma.microservice.order.controller;
 
 import io.github.raitraidma.microservice.order.dto.OrderDto;
 import io.github.raitraidma.microservice.order.service.OrderService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("orders")
@@ -14,6 +13,11 @@ public class OrderController {
 
     public OrderController(final OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping
+    public List<OrderDto> getOrders() {
+        return orderService.getOrders();
     }
 
     @PostMapping

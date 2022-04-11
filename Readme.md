@@ -14,6 +14,7 @@ We do not want to use other patterns like SAGA, TCC, etc. because then we have t
 - Java 11
 - Maven
 - Docker (DB setup)
+  - Enabled `max_prepared_transactions` in postgres.
 
 ## Architecture
 We have 3 services:
@@ -48,6 +49,17 @@ Each service has it's own database.
 
 ### Requests
 ```
+# Just to verify that Atomikos REST API is available
+# Should return "Hello from Atomikos!"
+curl -XGET 'http://localhost:8091/atomikos/atomikos'
+curl -XGET 'http://localhost:8092/atomikos/atomikos'
+curl -XGET 'http://localhost:8093/atomikos/atomikos'
+
+# To verify, order application endpoints are available
+curl -XGET 'http://localhost:8092/orders'
+```
+
+```
 # Pass (scenario 1)
 curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=2'
 curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=2'
@@ -57,8 +69,21 @@ curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=2'
 
 # Fail because there is not enough money on account  (scenario 2)
 curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=5'
-# Wrong state in product database. Product id=5 should have amount=5 but actually amount=4!
+# Correct state in product database. Product id=5 should have amount=5 and it has amount=5!
+# Distributed transaction works!
 
 # Pass (scenario 1)
 curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=1'
 ```
+
+## Other problems
+- If account DB dies and has to be restored from older backup, then data is still inconsistent
+  - How to overcome:
+    - Use one DB but different schemas for each microservice
+    - Use DB in HA mode (replication + load balancing)
+- When coordinator sends COMMIT to first microservice but fails before sending COMMIT to second microservice
+  - ...?
+- When first microservice's DB receives COMMIT but second microservice's DB fails before receiving COMMIT
+  - ...?
+- When using microservices then somehow you must manage transaction logs, so that pending transactions would be finished
+- Speed - is it really a problem?

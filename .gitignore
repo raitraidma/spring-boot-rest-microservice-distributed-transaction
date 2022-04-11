@@ -1,4 +1,3 @@
 /.idea/
-/account/target/
-/order/target/
-/product/target/
+/*/target/
+/transaction-logs/
