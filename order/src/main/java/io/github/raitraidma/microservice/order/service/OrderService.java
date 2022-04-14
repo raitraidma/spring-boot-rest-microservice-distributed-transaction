@@ -5,6 +5,7 @@ import io.github.raitraidma.microservice.order.dto.OrderDto;
 import io.github.raitraidma.microservice.order.dto.ProductResponseDto;
 import io.github.raitraidma.microservice.order.model.ProductOrder;
 import io.github.raitraidma.microservice.order.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Map;
 
 @Service
+@Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
     private final RestTemplate restTemplate;
@@ -34,6 +36,7 @@ public class OrderService {
                 ProductResponseDto.class,
                 Map.of("productId", productId)
         );
+        log.trace("OrderService.createOrder ProductResponseDto: {}", productResponseDto);
 
         AccountResponseDto accountResponseDto = restTemplate.postForObject(
                 "http://localhost:8091/accounts/{accountId}/withdraw?amount={amount}",
@@ -41,6 +44,7 @@ public class OrderService {
                 AccountResponseDto.class,
                 Map.of("accountId", accountId, "amount", productResponseDto.getPrice())
         );
+        log.trace("OrderService.createOrder AccountResponseDto: {}", accountResponseDto);
 
         OrderDto orderDto = new OrderDto();
         orderDto.setId(order.getId());

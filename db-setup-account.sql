@@ -9,4 +9,5 @@ INSERT INTO account (name, balance) VALUES
 , ('User 2', 20)
 , ('User 3', 30)
 , ('User 4', 40)
-, ('User 5', 50);
+, ('User 5', 50)
+, ('User 6', 60000000);
