@@ -22,6 +22,7 @@
         <module>account</module>
         <module>product</module>
         <module>common</module>
+        <module>test</module>
     </modules>
 
     <properties>
@@ -91,7 +92,14 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.gatling.highcharts</groupId>
+            <artifactId>gatling-charts-highcharts</artifactId>
+            <version>3.7.6</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

@@ -10,4 +10,5 @@ INSERT INTO product (name, amount, price) VALUES
 , ('Product 2', 2, 20)
 , ('Product 3', 3, 30)
 , ('Product 4', 4, 40)
-, ('Product 5', 5, 50);
+, ('Product 5', 5, 50)
+, ('Product 6', 60000000, 1);

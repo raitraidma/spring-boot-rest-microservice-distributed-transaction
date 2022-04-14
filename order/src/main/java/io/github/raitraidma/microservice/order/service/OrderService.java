@@ -44,14 +44,14 @@ public class OrderService {
                 Map.of("productId", productId)
         );
 
-        log.trace("OrderService.createOrder ProductResponseDto:" + productResponseDto);
+        log.trace("OrderService.createOrder ProductResponseDto: {}", productResponseDto);
         AccountResponseDto accountResponseDto = restTemplate.postForObject(
                 "http://localhost:8091/accounts/{accountId}/withdraw?amount={amount}",
                 null,
                 AccountResponseDto.class,
                 Map.of("accountId", accountId, "amount", productResponseDto.getPrice())
         );
-        log.trace("OrderService.createOrder AccountResponseDto:" + accountResponseDto);
+        log.trace("OrderService.createOrder AccountResponseDto: {}", accountResponseDto);
 
         return mapEntityToDto(order);
     }

@@ -76,6 +76,58 @@ curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=5'
 curl -XPOST 'http://localhost:8092/orders?accountId=5&productId=1'
 ```
 
+### Load tests
+```
+cd test
+mvn gatling:test
+```
+
+#### Results
+```
+Repeat: 100; AtOnceUsers: 100
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=10000  KO=0     )
+> min response time                                    230 (OK=230    KO=-     )
+> max response time                                   9243 (OK=9243   KO=-     )
+> mean response time                                  6487 (OK=6487   KO=-     )
+> std deviation                                       1415 (OK=1415   KO=-     )
+> response time 50th percentile                       7176 (OK=7176   KO=-     )
+> response time 75th percentile                       7340 (OK=7340   KO=-     )
+> response time 95th percentile                       7672 (OK=7672   KO=-     )
+> response time 99th percentile                       7974 (OK=7974   KO=-     )
+> mean requests/sec                                 15.314 (OK=15.314 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                            11 (  0%)
+> 800 ms < t < 1200 ms                                   8 (  0%)
+> t > 1200 ms                                         9981 (100%)
+> failed                                                 0 (  0%)
+================================================================================
+
+Repeat: 10000; AtOnceUsers: 1
+================================================================================
+---- Global Information --------------------------------------------------------
+> request count                                      10000 (OK=10000  KO=0     )
+> min response time                                     49 (OK=49     KO=-     )
+> max response time                                    527 (OK=527    KO=-     )
+> mean response time                                    81 (OK=81     KO=-     )
+> std deviation                                         16 (OK=16     KO=-     )
+> response time 50th percentile                         86 (OK=86     KO=-     )
+> response time 75th percentile                         88 (OK=88     KO=-     )
+> response time 95th percentile                         99 (OK=99     KO=-     )
+> response time 99th percentile                        111 (OK=111    KO=-     )
+> mean requests/sec                                 12.376 (OK=12.376 KO=-     )
+---- Response Time Distribution ------------------------------------------------
+> t < 800 ms                                         10000 (100%)
+> 800 ms < t < 1200 ms                                   0 (  0%)
+> t > 1200 ms                                            0 (  0%)
+> failed                                                 0 (  0%)
+================================================================================
+```
+
+- Atomikos performs a lot faster when multiple requests do not try to access same resource for writing
+  - It is logical, because request doest not have to wait behind other request's lock.
+
 ## Other problems
 - If account DB dies and has to be restored from older backup, then data is still inconsistent
   - How to overcome:
